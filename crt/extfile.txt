@@ -1,0 +1,1 @@
+subjectAltName=DNS:cdb19c-ords,DNS:www.example.com

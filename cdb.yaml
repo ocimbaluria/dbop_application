@@ -1,0 +1,52 @@
+#
+# Copyright (c) 2022, Oracle and/or its affiliates. All rights reserved.
+# Licensed under the Universal Permissive License v 1.0 as shown at http://oss.oracle.com/licenses/upl.
+#
+apiVersion: database.oracle.com/v1alpha1
+kind: CDB 
+metadata: 
+  name: cdb19c
+  namespace: oracle-database-operator-system
+spec:
+  cdbName: "DB19C"
+  #dbServer: "10.0.10.139"
+  #dbPort: 1521
+  replicas: 1
+  ordsImage: "eu-frankfurt-1.ocir.io/frg6v9xlrkul/ordscdb:latest"
+  ordsImagePullPolicy: "Always"
+  # Uncomment Below Secret Format for accessing ords image from private docker registry
+  ordsImagePullSecret: "ocr-reg-cred"
+  #serviceName: "DB0227_55c_fra.subb6ffe018e.k8scluster1.oraclevcn.com"
+  dbTnsurl: "(DESCRIPTION=(CONNECT_TIMEOUT=90)(RETRY_COUNT=30)(RETRY_DELAY=10)(TRANSPORT_CONNECT_TIMEOUT=70)(LOAD_BALLANCE=ON)(ADDRESS=(PROTOCOL=TCP)(HOST=10.0.10.139)(PORT=1521)(IP=V4_ONLY))(CONNECT_DATA=(SERVER=DEDICATED)(SERVICE_NAME=DB0227_55c_fra.subb6ffe018e.k8scluster1.oraclevcn.com)))"
+  sysAdminPwd: 
+    secret: 
+      secretName: "cdb1-secret"
+      key: "sysadmin_pwd"
+  ordsPwd:
+    secret: 
+      secretName: "cdb1-secret"
+      key: "ords_pwd"  
+  cdbAdminUser: 
+    secret: 
+      secretName: "cdb1-secret"
+      key: "cdbadmin_user"
+  cdbAdminPwd: 
+    secret: 
+      secretName: "cdb1-secret"
+      key: "cdbadmin_pwd"
+  webServerUser: 
+    secret: 
+      secretName: "cdb1-secret"
+      key: "webserver_user"
+  webServerPwd: 
+    secret: 
+      secretName: "cdb1-secret"
+      key: "webserver_pwd"  
+  cdbTlsCrt:
+    secret:
+      secretName: "db-tls"
+      key: "tls.crt"
+  cdbTlsKey:
+    secret:
+      secretName: "db-tls"
+      key: "tls.key"
