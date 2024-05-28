@@ -1,0 +1,63 @@
+## MyToDoReact version 2.0.0
+##
+## Copyright (c) 2021 Oracle, Inc.
+## Licensed under the Universal Permissive License v 1.0 as shown at https://oss.oracle.com/licenses/upl/
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend-deployment
+  labels:
+    app: backendapp
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: backendapp
+  template:
+    metadata:
+      labels:
+        app: backendapp
+    spec:
+      containers:
+      - name: app
+        image: eu-frankfurt-1.ocir.io/frg6v9xlrkul/todolistapp-helidon-se:latest
+        imagePullSecrets:
+          - name:  "ocr-reg-cred"
+        env:
+        - name: database.user
+          valueFrom:
+            secretKeyRef:
+              key: application_user
+              name: pdb1-secret
+        - name: database.url
+          value: "jdbc:oracle:thin:@db19capp.subb6ffe018e.k8scluster1.oraclevcn.com:1521/TESTPDB.subb6ffe018e.k8scluster1.oraclevcn.com?TNS_ADMIN=/mtdrworkshop/creds"
+        - name: todo.table.name
+          value: "todoitem"
+        - name: OCI_REGION
+          value: "eu-frankfurt-1"
+        - name: dbpassword
+          valueFrom:
+            secretKeyRef:
+              key: application_pwd
+              name: pdb1-secret
+        volumeMounts:
+        - name: creds
+          mountPath: /mtdrworkshop/creds
+        ports:
+        - containerPort: 8080
+      restartPolicy: Always
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend-service
+spec:
+  type: NodePort
+  ports:
+  - port: 80
+    targetPort: 8080
+  selector:
+    app: backendapp
+
