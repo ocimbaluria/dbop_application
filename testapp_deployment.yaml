@@ -25,7 +25,7 @@ spec:
               key: sysadmin_pwd
               name: cdb1-secret
         - name: DBURL
-          value: "(DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST=10.0.10.139)(PORT=1521)))(CONNECT_DATA=(SERVICE_NAME=testpdb.subb6ffe018e.k8scluster1.oraclevcn.com)(INSTANCE_NAME=DB0227_55c_fra.subb6ffe018e.k8scluster1.oraclevcn.com)(UR=A)(SERVER=DEDICATED)))"
+          value: "(DESCRIPTION=(CONNECT_TIMEOUT=5)(TRANSPORT_CONNECT_TIMEOUT=3)(RETRY_COUNT=3)(ADDRESS_LIST=(LOAD_BALANCE=on)(ADDRESS=(PROTOCOL=TCP)(HOST=10.0.10.139)(PORT=1521)))(CONNECT_DATA=(SERVICE_NAME=TESTPDB.subb6ffe018e.k8scluster1.oraclevcn.com)))"
         image: docker.io/ilfur/helidon-dbstat
         imagePullPolicy: Always
         name: cmpdemoapp-container
