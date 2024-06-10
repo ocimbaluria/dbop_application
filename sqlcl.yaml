@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sqlcl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: sqlcl
+  template:
+    metadata:
+      labels:
+        app: sqlcl
+        version: deploy
+    spec:
+      containers:
+      - name: banksqlcl
+        image: eu-frankfurt-1.ocir.io/frg6v9xlrkul/sqlcl_demo:latest
+        imagePullPolicy: Always
+        env:
+        - name: user
+          value: "system"
+        - name: password
+          value: "PC-7cgag5PCk_zX"
+        - name: connecturl
+          value: "//10.0.10.139:1521/testpdb.subb6ffe018e.k8scluster1.oraclevcn.com"
+      imagePullSecrets:
+      - name:  "ocr-reg-cred"
+      restartPolicy: Always
+      

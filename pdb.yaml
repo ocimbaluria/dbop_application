@@ -18,7 +18,7 @@ spec:
       secretName: "pdb1-secret"
       key: "sysadmin_pwd"
   fileNameConversions: "NONE"
-  totalSize: "1G"
+  totalSize: "10G"
   tempSize: "100M"
   action: "Create"
   pdbTlsCat:

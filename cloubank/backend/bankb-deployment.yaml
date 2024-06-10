@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bankb-sproingboot
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: bankb
+  template:
+    metadata:
+      labels:
+        app: bankb
+        version: springboot
+    spec:
+      containers:
+      - name: bank
+        image: eu-frankfurt-1.ocir.io/frg6v9xlrkul/backend-cloudbank:latest
+        imagePullPolicy: Always
+        env:
+        - name: localbankqueueschema
+          value: "aquser"
+        - name: localbankqueuename
+          value: "BANKBQUEUE"
+        - name: remotebankqueueschema
+          value: "aquser"
+        - name: remotebankqueuename
+          value: "BANKAQUEUE"
+        - name: banksubscribername
+          value: "bankb_service"
+        - name: bankdbuser
+          value: "bankbuser"
+        - name: bankdburl
+          value: "jdbc:oracle:thin:@//10.0.10.139:1521/test_app.subb6ffe018e.k8scluster1.oraclevcn.com"
+        - name: bankdbpw
+          value: "Welcome12345"
+        ports:
+        - containerPort: 8080
+      imagePullSecrets:
+      - name:  "ocr-reg-cred"
+      restartPolicy: Always
+      
